@@ -1,0 +1,17 @@
+{
+  "name": "com.ginovalerio.events",
+  "version": "0.1.0",
+  "displayName": "EventDispatcher Package",
+  "description": "This implementation of an event dispatcher is based on typed events",
+  "unity": "2021.3",
+  "keywords": [
+    "event",
+    "manager",
+    "utility"
+  ],
+  "author": {
+    "name": "Gino Valerio",
+    "email": "valeriounity@gmail.com",
+    "url": "https://github.com/LokoJigen"
+  }
+}
