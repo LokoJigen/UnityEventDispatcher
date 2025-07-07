@@ -1,5 +1,5 @@
 {
-  "name": "com.ginovalerio.events",
+  "name": "com.lokojigen.events",
   "version": "0.1.0",
   "displayName": "EventDispatcher Package",
   "description": "This implementation of an event dispatcher is based on typed events",
@@ -10,8 +10,7 @@
     "utility"
   ],
   "author": {
-    "name": "Gino Valerio",
-    "email": "valeriounity@gmail.com",
+    "name": "Lokojigen",
     "url": "https://github.com/LokoJigen"
   }
 }
