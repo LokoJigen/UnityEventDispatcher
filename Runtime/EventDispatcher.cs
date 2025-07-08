@@ -10,7 +10,7 @@ namespace com.lokojigen.events
     public class EventDispatcher : MonoBehaviour
     {
         // Contains all available events types
-        protected Dictionary<Type, List<Action<object>>> eventDictionary = new();
+        private Dictionary<Type, List<Delegate>> eventDictionary = new();
 
         public static IEventLogger Logger { get; set; }
 
@@ -24,12 +24,12 @@ namespace com.lokojigen.events
             Type eventType = typeof(T);
             if (!eventDictionary.ContainsKey(eventType))
             {
-                eventDictionary[eventType] = new List<Action<object>>();
+                eventDictionary[eventType] = new List<Delegate>();
             }
 
-            Logger?.Log($"[EventManager] SubscribeToEvent - {eventType}\nFor obj (script) {callback.Target}\nMethod {callback.Method.Name}");
+            eventDictionary[eventType].Add(callback);
 
-            eventDictionary[eventType].Add((param) => callback((T)param));
+            Logger?.Log($"[EventManager] Subscribed: {callback.Method.Name} from {callback.Target}");
         }
 
         /// <summary>
@@ -42,9 +42,8 @@ namespace com.lokojigen.events
             Type eventType = typeof(T);
             if (eventDictionary.ContainsKey(eventType))
             {
-                Logger?.Log($"[EventManager] UnsubscribeToEvent - {eventType}\nFor obj (script) {callback.Target}\nMethod {callback.Method.Name}");
-
-                eventDictionary[eventType].Remove((param) => callback((T)param));
+                eventDictionary[eventType].Remove(callback);
+                Logger?.Log($"[EventManager] Unsubscribed: {callback.Method.Name} from {callback.Target}");
             }
         }
 
@@ -62,7 +61,10 @@ namespace com.lokojigen.events
 
                 for (int i = 0; i < eventDictionary[eventType].Count; i++)
                 {
-                    eventDictionary[eventType][i].Invoke(targetEvent);
+                    if (eventDictionary[eventType][i] is Action<T> action)
+                    {
+                        action.Invoke(targetEvent);
+                    }
                 }
             }
         }
